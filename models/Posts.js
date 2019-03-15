@@ -29,7 +29,7 @@ const PostSchema = new Schema({
             ref: 'users'
         }
     }],
-    comment: [{
+    comments: [{
         user: {
             type: Schema.Types.ObjectId,
             ref: 'users'
@@ -55,4 +55,4 @@ const PostSchema = new Schema({
     },
 });
 
-module.exports = Posts = mongoose.model('post', PostSchema)
+module.exports = Post = mongoose.model('post', PostSchema)
