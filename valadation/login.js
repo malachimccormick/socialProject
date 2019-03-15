@@ -10,7 +10,7 @@ module.exports = function validateLoginInput(data) {
 
 
 
-    if (!Validator.isEmpty(data.email)) {
+    if (Validator.isEmpty(data.email)) {
         errors.email = 'Email is invalid';
     }
     if (Validator.isEmpty(data.password)) {
