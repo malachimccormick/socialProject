@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import classnames from "classnames";
 import { loginUser } from "../../actions/authActions";
 import TextFieldGroup from "../common/TextFieldGroup";
 
@@ -68,7 +67,7 @@ class Login extends Component {
                 />
 
                 <TextFieldGroup
-                  placeholder="PasswordEmail Address"
+                  placeholder="Password"
                   name="password"
                   type="password"
                   value={this.state.password}
