@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import InputGroup from "../common/InputGroup";
 import SelectListGroup from "../common/SelectListGroup";
+import { createProfile } from "../../actions/profileActions";
 
 class CreateProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      displaySocialInputes: false,
       handle: "",
       company: "",
       website: "",
@@ -29,16 +30,88 @@ class CreateProfile extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   onSubmit(e) {
     e.preventDefault();
-    console.log("submit");
+
+    const profileData = {
+      handle: this.state.handle,
+      company: this.state.company,
+      website: this.state.website,
+      location: this.state.location,
+      status: this.state.status,
+      skills: this.state.skills,
+      githubusername: this.state.githubusername,
+      bio: this.state.bio,
+      twitter: this.state.twitter,
+      facebook: this.state.facebook,
+      linkedin: this.state.linkedin,
+      youtube: this.state.youtube,
+      instagram: this.state.instagram
+    };
+    this.props.createProfile(profileData, this.props.history);
   }
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
 
   render() {
-    const { errors } = this.state;
+    const { errors, displaySocialInputes } = this.state;
+
+    let socialInputs;
+
+    if (displaySocialInputes) {
+      socialInputs = (
+        <div>
+          <InputGroup
+            placeholder="Twitter Profile URL"
+            name="twitter"
+            icon="fab fa-twitter"
+            value={this.state.twitter}
+            onChange={this.onChange}
+            error={errors.twitter}
+          />
+          <InputGroup
+            placeholder="Facebook Profile URL"
+            name="facebook"
+            icon="fab fa-facebook"
+            value={this.state.facebook}
+            onChange={this.onChange}
+            error={errors.facebook}
+          />
+          <InputGroup
+            placeholder="Linkedin Profile URL"
+            name="linkedin"
+            icon="fab fa-linkedin"
+            value={this.state.linkedin}
+            onChange={this.onChange}
+            error={errors.linkedin}
+          />
+          <InputGroup
+            placeholder="Instagram Profile URL"
+            name="instagram"
+            icon="fab fa-instagram"
+            value={this.state.instagram}
+            onChange={this.onChange}
+            error={errors.instagram}
+          />
+          <InputGroup
+            placeholder="YouTube Profile URL"
+            name="youtube"
+            icon="fab fa-youtube"
+            value={this.state.youtube}
+            onChange={this.onChange}
+            error={errors.youtube}
+          />
+        </div>
+      );
+    }
+
     // Select options for status
     const options = [
       { label: "* Select Professional Status", value: 0 },
@@ -107,7 +180,7 @@ class CreateProfile extends Component {
                   value={this.state.skills}
                   onChange={this.onChange}
                   error={errors.skills}
-                  info="Use a comma to seperate your skills ex. HTLM,CSS,Ruby"
+                  info="Use a comma to seperate your skills ex. React, Javascript, Ruby"
                 />
                 <TextFieldGroup
                   placeholder="Github Username"
@@ -127,6 +200,7 @@ class CreateProfile extends Component {
                 />
                 <div className="mb-3">
                   <button
+                    type="button"
                     onClick={() => {
                       this.setState(prevState => ({
                         displaySocialInputes: !prevState.displaySocialInputes
@@ -136,8 +210,14 @@ class CreateProfile extends Component {
                   >
                     Add Social Network Links
                   </button>
-                  <span className="text-muted">Optional</span>
+                  <span className="text-muted"> Optional</span>
                 </div>
+                {socialInputs}
+                <input
+                  type="submit"
+                  value="Submit"
+                  className="btn btn-info btn-block mt-4"
+                />
               </form>
             </div>
           </div>
@@ -156,4 +236,7 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps)(CreateProfile);
+export default connect(
+  mapStateToProps,
+  { createProfile }
+)(withRouter(CreateProfile));
