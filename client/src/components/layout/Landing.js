@@ -16,7 +16,10 @@ class Landing extends Component {
         <div className="dark-overlay landing-inner text-light">
           <div className="container">
             <div className="row">
-              <div className="col-md-12 text-center">
+              <div
+                className="col-md-12 text-center"
+                style={{ marginTop: "10%" }}
+              >
                 <h1 className="display-3 mb-4">Devl Up</h1>
                 <p className="lead"> Where developers come to brew</p>
                 <hr />
