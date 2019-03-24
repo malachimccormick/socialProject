@@ -15,9 +15,11 @@ class Register extends Component {
       password2: "",
       errors: {}
     };
-    //Binding this because it is not an arrow function
+
+    this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/dashboard");
@@ -30,9 +32,13 @@ class Register extends Component {
     }
   }
 
-  //no arrow function so you have to bind this
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
   onSubmit(e) {
     e.preventDefault();
+
     const newUser = {
       name: this.state.name,
       email: this.state.email,
@@ -42,17 +48,12 @@ class Register extends Component {
 
     this.props.registerUser(newUser, this.props.history);
   }
-  //Arrow function, no need to bind this
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+
   render() {
     const { errors } = this.state;
 
-    // const { user } = this.props.auth;
     return (
       <div className="register">
-        {/* {user ? user.name : null} */}
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
@@ -73,7 +74,7 @@ class Register extends Component {
                   value={this.state.email}
                   onChange={this.onChange}
                   error={errors.email}
-                  info="This site uses Gravatar so if you want a profile image use a Gravatar email"
+                  info="This site uses Gravatar. If you want a profile image please use a Gravatar email"
                 />
                 <TextFieldGroup
                   placeholder="Password"
@@ -86,7 +87,7 @@ class Register extends Component {
                 <TextFieldGroup
                   placeholder="Confirm Password"
                   name="password2"
-                  type="password2"
+                  type="password"
                   value={this.state.password2}
                   onChange={this.onChange}
                   error={errors.password2}
